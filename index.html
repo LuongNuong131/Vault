@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vault Code Breaker - Premium</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #fff;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        animation: fadeInDown 0.8s ease;
+      }
+
+      .header h1 {
+        font-size: 3em;
+        font-weight: 700;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+      }
+
+      .header p {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .main-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+        animation: fadeInUp 0.8s ease;
+      }
+
+      .section-title {
+        color: #667eea;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .input-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .digit-box {
+        background: linear-gradient(145deg, #f0f0f0, #ffffff);
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+
+      .digit-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .digit-box label {
+        display: block;
+        font-weight: 600;
+        color: #667eea;
+        margin-bottom: 10px;
+        font-size: 0.9em;
+      }
+
+      .digit-input {
+        width: 100%;
+        height: 60px;
+        font-size: 2em;
+        text-align: center;
+        border: 3px solid #e0e0e0;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+        font-weight: bold;
+        background: white;
+      }
+
+      .digit-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .color-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+      }
+
+      .color-btn {
+        width: 30px;
+        height: 30px;
+        border: 3px solid transparent;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .color-btn:hover {
+        transform: scale(1.1);
+      }
+
+      .color-btn.active {
+        border-color: #333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .color-btn.active::after {
+        content: "✓";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-weight: bold;
+        font-size: 1.2em;
+        text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+      }
+
+      .color-btn.red {
+        background: linear-gradient(145deg, #ff6b6b, #ee5a6f);
+      }
+
+      .color-btn.blue {
+        background: linear-gradient(145deg, #4ecdc4, #44a8a0);
+      }
+
+      .color-btn.green {
+        background: linear-gradient(145deg, #95e1d3, #7ed6c2);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 15px 30px;
+        font-size: 1.1em;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn:active {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(145deg, #667eea, #764ba2);
+        color: white;
+      }
+
+      .btn-danger {
+        background: linear-gradient(145deg, #ff6b6b, #ee5a6f);
+        color: white;
+      }
+
+      .history-item {
+        background: linear-gradient(145deg, #f8f9fa, #ffffff);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        animation: slideIn 0.5s ease;
+      }
+
+      .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .history-title {
+        font-weight: 700;
+        color: #667eea;
+        font-size: 1.2em;
+      }
+
+      .delete-btn {
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+      }
+
+      .delete-btn:hover {
+        background: #ee5a6f;
+        transform: scale(1.05);
+      }
+
+      .digits-display {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .display-digit {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .display-digit.red {
+        background: linear-gradient(145deg, #ff6b6b, #ee5a6f);
+        color: white;
+      }
+
+      .display-digit.blue {
+        background: linear-gradient(145deg, #4ecdc4, #44a8a0);
+        color: white;
+      }
+
+      .display-digit.green {
+        background: linear-gradient(145deg, #95e1d3, #7ed6c2);
+        color: #333;
+      }
+
+      .analysis-content {
+        color: #333;
+        line-height: 1.8;
+      }
+
+      .analysis-content h3 {
+        color: #667eea;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 1.3em;
+      }
+
+      .analysis-content p {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .final-solution {
+        background: linear-gradient(145deg, #ffd93d, #ffb703);
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        margin-top: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: pulse 2s infinite;
+      }
+
+      .final-solution h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .final-code {
+        font-size: 3em;
+        font-weight: bold;
+        letter-spacing: 10px;
+        color: #333;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: "Courier New", monospace;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .stat-box {
+        background: linear-gradient(145deg, #667eea, #764ba2);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .stat-number {
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 0.9em;
+        opacity: 0.9;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+      }
+
+      .empty-state svg {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.02);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2em;
+        }
+
+        .input-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🔐 VAULT CODE BREAKER</h1>
+        <p>Giải mã mật khẩu Vault với thuật toán thông minh</p>
+      </div>
+
+      <div class="main-card">
+        <div class="section-title">📝 Nhập Kết Quả Lần Thử</div>
+
+        <div class="input-grid" id="inputGrid"></div>
+
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="addClue()">
+            ✅ Thêm Gợi Ý & Phân Tích
+          </button>
+          <button class="btn btn-danger" onclick="resetGame()">
+            🔄 Bắt Đầu Lại
+          </button>
+        </div>
+      </div>
+
+      <div class="main-card" id="statsCard" style="display: none">
+        <div class="section-title">📊 Thống Kê</div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-number" id="totalAttempts">0</div>
+            <div class="stat-label">Lần Thử</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="greenCount">0</div>
+            <div class="stat-label">Vị Trí Đúng</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="blueCount">0</div>
+            <div class="stat-label">Số Đúng Sai Vị Trí</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number" id="progress">0%</div>
+            <div class="stat-label">Tiến Độ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-card" id="historyCard">
+        <div class="section-title">📜 Lịch Sử Thử Nghiệm</div>
+        <div id="historyContent">
+          <div class="empty-state">
+            <svg fill="#ccc" viewBox="0 0 24 24">
+              <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
+              />
+            </svg>
+            <p>Chưa có lần thử nào. Hãy nhập kết quả đầu tiên!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-card">
+        <div class="section-title">🧠 Phân Tích Thông Minh</div>
+        <div class="analysis-content" id="analysisContent">
+          <p>Nhập ít nhất một lần thử để bắt đầu phân tích...</p>
+        </div>
+      </div>
+
+      <div id="solutionContainer"></div>
+    </div>
+
+    <script>
+      let clues = [];
+      const NUM_DIGITS = 9;
+      const POSSIBLE_DIGITS = [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+      ];
+
+      function initializeInputs() {
+        const grid = document.getElementById("inputGrid");
+        grid.innerHTML = "";
+
+        for (let i = 0; i < NUM_DIGITS; i++) {
+          const box = document.createElement("div");
+          box.className = "digit-box";
+          box.innerHTML = `
+                    <label>Vị trí ${i + 1}</label>
+                    <input type="number" id="digit-${i}" class="digit-input" min="0" max="9" maxlength="1">
+                    <div class="color-buttons">
+                        <button class="color-btn red active" data-color="red" onclick="selectColor(${i}, 'red')"></button>
+                        <button class="color-btn blue" data-color="blue" onclick="selectColor(${i}, 'blue')"></button>
+                        <button class="color-btn green" data-color="green" onclick="selectColor(${i}, 'green')"></button>
+                    </div>
+                `;
+          grid.appendChild(box);
+        }
+      }
+
+      function selectColor(index, color) {
+        const buttons = document.querySelectorAll(
+          `#inputGrid .digit-box:nth-child(${index + 1}) .color-btn`
+        );
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        buttons.forEach((btn) => {
+          if (btn.dataset.color === color) {
+            btn.classList.add("active");
+          }
+        });
+      }
+
+      function addClue() {
+        let currentClue = [];
+        let isValid = true;
+
+        for (let i = 0; i < NUM_DIGITS; i++) {
+          const digitInput = document.getElementById(`digit-${i}`);
+          const digit = digitInput.value;
+
+          if (digit === "" || !/^\d$/.test(digit)) {
+            alert(`⚠️ Vui lòng nhập một chữ số hợp lệ vào vị trí ${i + 1}`);
+            isValid = false;
+            break;
+          }
+
+          const activeBtn = document.querySelector(
+            `#inputGrid .digit-box:nth-child(${i + 1}) .color-btn.active`
+          );
+          const color = activeBtn.dataset.color;
+
+          currentClue.push({
+            position: i,
+            digit: digit,
+            color: color,
+          });
+        }
+
+        if (isValid) {
+          clues.push(currentClue);
+          displayHistory();
+          analyzeClues();
+          updateStats();
+
+          // Clear inputs
+          for (let i = 0; i < NUM_DIGITS; i++) {
+            document.getElementById(`digit-${i}`).value = "";
+            selectColor(i, "red");
+          }
+
+          // Show stats card
+          document.getElementById("statsCard").style.display = "block";
+        }
+      }
+
+      function displayHistory() {
+        const historyContent = document.getElementById("historyContent");
+
+        if (clues.length === 0) {
+          historyContent.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="#ccc" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <p>Chưa có lần thử nào. Hãy nhập kết quả đầu tiên!</p>
+                    </div>
+                `;
+          return;
+        }
+
+        let html = "";
+        clues.forEach((clue, index) => {
+          html += `
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div class="history-title">Lần thử #${
+                              index + 1
+                            }</div>
+                            <button class="delete-btn" onclick="deleteClue(${index})">🗑️ Xóa</button>
+                        </div>
+                        <div class="digits-display">
+                            ${clue
+                              .map(
+                                (item) => `
+                                <div class="display-digit ${item.color}">${item.digit}</div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                `;
+        });
+
+        historyContent.innerHTML = html;
+      }
+
+      function deleteClue(index) {
+        if (confirm("Bạn có chắc muốn xóa lần thử này?")) {
+          clues.splice(index, 1);
+          displayHistory();
+          analyzeClues();
+          updateStats();
+        }
+      }
+
+      function updateStats() {
+        let greenCount = 0;
+        let blueCount = 0;
+
+        clues.forEach((clue) => {
+          clue.forEach((item) => {
+            if (item.color === "green") greenCount++;
+            if (item.color === "blue") blueCount++;
+          });
+        });
+
+        const uniqueGreens = new Set();
+        clues.forEach((clue) => {
+          clue.forEach((item) => {
+            if (item.color === "green") {
+              uniqueGreens.add(item.position);
+            }
+          });
+        });
+
+        const progress = Math.round((uniqueGreens.size / NUM_DIGITS) * 100);
+
+        document.getElementById("totalAttempts").textContent = clues.length;
+        document.getElementById("greenCount").textContent = uniqueGreens.size;
+        document.getElementById("blueCount").textContent = blueCount;
+        document.getElementById("progress").textContent = progress + "%";
+      }
+
+      function analyzeClues() {
+        const analysisDiv = document.getElementById("analysisContent");
+        const solutionDiv = document.getElementById("solutionContainer");
+
+        if (clues.length === 0) {
+          analysisDiv.innerHTML =
+            "<p>Nhập ít nhất một lần thử để bắt đầu phân tích...</p>";
+          solutionDiv.innerHTML = "";
+          return;
+        }
+
+        let finalCode = Array(NUM_DIGITS).fill("_");
+        let mustInclude = new Set();
+        let excludedDigits = new Set();
+        let positionConstraints = Array(NUM_DIGITS)
+          .fill(null)
+          .map(() => new Set(POSSIBLE_DIGITS));
+
+        // Analyze clues
+        clues.forEach((clue) => {
+          clue.forEach((item) => {
+            const digit = item.digit;
+            const color = item.color;
+            const position = item.position;
+
+            if (color === "green") {
+              finalCode[position] = digit;
+              mustInclude.add(digit);
+              positionConstraints[position] = new Set([digit]);
+            } else if (color === "red") {
+              let wasBlueOrGreen = clues.some((c) =>
+                c.some(
+                  (i) =>
+                    i.digit === digit &&
+                    (i.color === "blue" || i.color === "green")
+                )
+              );
+              if (!wasBlueOrGreen) {
+                excludedDigits.add(digit);
+              }
+              positionConstraints[position].delete(digit);
+            } else if (color === "blue") {
+              mustInclude.add(digit);
+              positionConstraints[position].delete(digit);
+            }
+          });
+        });
+
+        // Update constraints
+        for (let i = 0; i < NUM_DIGITS; i++) {
+          if (finalCode[i] === "_") {
+            excludedDigits.forEach((d) => positionConstraints[i].delete(d));
+          }
+        }
+
+        // Generate analysis HTML
+        let html = "<h3>📌 Tóm Tắt Phân Tích</h3>";
+        html += `<p><strong>Mã hiện tại:</strong> ${finalCode
+          .map((d) => (d === "_" ? "?" : d))
+          .join(" ")}</p>`;
+        html += `<p><strong>Các số phải có:</strong> ${
+          [...mustInclude].join(", ") || "Chưa xác định"
+        }</p>`;
+        html += `<p><strong>Các số bị loại:</strong> ${
+          [...excludedDigits].join(", ") || "Chưa có"
+        }</p>`;
+
+        html += "<h3>🎯 Phân Tích Từng Vị Trí</h3>";
+        for (let i = 0; i < NUM_DIGITS; i++) {
+          if (finalCode[i] === "_") {
+            let possibleDigits = [...positionConstraints[i]].filter(
+              (d) => !excludedDigits.has(d)
+            );
+            html += `<p><strong>Vị trí ${
+              i + 1
+            }:</strong> Khả năng còn lại: ${possibleDigits.join(", ")}</p>`;
+          } else {
+            html += `<p><strong>Vị trí ${i + 1}:</strong> ✅ Đã xác định: ${
+              finalCode[i]
+            }</p>`;
+          }
+        }
+
+        // Generate smart suggestion
+        if (finalCode.includes("_")) {
+          html += "<h3>💡 Gợi Ý Thông Minh - Lần Thử Tiếp Theo</h3>";
+
+          let suggestion = generateSmartSuggestion(
+            finalCode,
+            mustInclude,
+            excludedDigits,
+            positionConstraints
+          );
+
+          html +=
+            '<div style="background: linear-gradient(145deg, #e3f2fd, #bbdefb); padding: 20px; border-radius: 12px; border: 3px solid #2196f3; margin-top: 15px;">';
+          html +=
+            '<p style="font-size: 1.1em; margin-bottom: 15px;"><strong>🎯 Chiến lược:</strong> ' +
+            suggestion.strategy +
+            "</p>";
+          html +=
+            '<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">';
+
+          suggestion.code.forEach((digit, index) => {
+            let bgColor = finalCode[index] !== "_" ? "#4caf50" : "#2196f3";
+            let label = finalCode[index] !== "_" ? "✓" : "?";
+            html += `
+                        <div style="text-align: center;">
+                            <div style="width: 50px; height: 50px; background: ${bgColor}; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8em; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                                ${digit}
+                            </div>
+                            <div style="font-size: 0.8em; color: #333; margin-top: 5px;">${label} ${
+              index + 1
+            }</div>
+                        </div>
+                    `;
+          });
+
+          html += "</div>";
+          html +=
+            '<p style="margin-top: 15px; font-size: 0.95em; color: #555;"><strong>📝 Giải thích:</strong> ' +
+            suggestion.explanation +
+            "</p>";
+          html += "</div>";
+        }
+
+        analysisDiv.innerHTML = html;
+
+        // Check if solved
+        if (!finalCode.includes("_")) {
+          solutionDiv.innerHTML = `
+                    <div class="final-solution">
+                        <h2>🎉 CHÚC MỪNG! BẠN ĐÃ GIẢI MÃ THÀNH CÔNG!</h2>
+                        <div class="final-code">${finalCode.join(" ")}</div>
+                        <p style="color: #333; margin-top: 20px; font-size: 1.2em;">Mật mã là: <strong>${finalCode.join(
+                          ""
+                        )}</strong></p>
+                    </div>
+                `;
+        } else {
+          solutionDiv.innerHTML = "";
+        }
+      }
+
+      function resetGame() {
+        if (
+          confirm(
+            "🔄 Bạn có chắc chắn muốn bắt đầu lại? Toàn bộ dữ liệu sẽ bị xóa."
+          )
+        ) {
+          clues = [];
+          initializeInputs();
+          displayHistory();
+          analyzeClues();
+          document.getElementById("statsCard").style.display = "none";
+          document.getElementById("solutionContainer").innerHTML = "";
+        }
+      }
+
+      function generateSmartSuggestion(
+        finalCode,
+        mustInclude,
+        excludedDigits,
+        positionConstraints
+      ) {
+        let suggestion = [...finalCode];
+        let strategy = "";
+        let explanation = "";
+
+        // Count unknowns
+        let unknownCount = finalCode.filter((d) => d === "_").length;
+        let knownCount = NUM_DIGITS - unknownCount;
+
+        if (knownCount === 0) {
+          // First attempt - try to test different digits
+          strategy = "Lần thử đầu tiên - Kiểm tra phạm vi số";
+          explanation =
+            "Thử các số khác nhau để xác định số nào có trong mã. Tránh lặp lại số để tối đa thông tin.";
+          let testDigits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+          for (let i = 0; i < NUM_DIGITS; i++) {
+            suggestion[i] = testDigits[i];
+          }
+        } else if (mustInclude.size > 0 && knownCount < NUM_DIGITS) {
+          // Have some blues/greens - smart positioning
+          strategy = "Định vị các số đã biết vào vị trí khả dụng";
+          explanation =
+            "Đặt các số có trong mã (màu xanh dương) vào các vị trí chưa loại trừ để tìm vị trí đúng.";
+
+          let unplacedMustInclude = [...mustInclude].filter(
+            (d) => !finalCode.includes(d)
+          );
+          let unplacedIndex = 0;
+
+          for (let i = 0; i < NUM_DIGITS; i++) {
+            if (suggestion[i] === "_") {
+              let possibleDigits = [...positionConstraints[i]].filter(
+                (d) => !excludedDigits.has(d)
+              );
+
+              // Try to place a mustInclude digit
+              if (unplacedIndex < unplacedMustInclude.length) {
+                let digitToPlace = unplacedMustInclude[unplacedIndex];
+                if (possibleDigits.includes(digitToPlace)) {
+                  suggestion[i] = digitToPlace;
+                  unplacedIndex++;
+                } else {
+                  // Use any possible digit
+                  suggestion[i] = possibleDigits[0] || "0";
+                }
+              } else {
+                // Fill with a new test digit
+                let unusedDigit = POSSIBLE_DIGITS.find(
+                  (d) =>
+                    !excludedDigits.has(d) &&
+                    !mustInclude.has(d) &&
+                    possibleDigits.includes(d)
+                );
+                suggestion[i] = unusedDigit || possibleDigits[0] || "0";
+              }
+            }
+          }
+        } else if (unknownCount <= 3) {
+          // Almost there - systematic testing
+          strategy = "Gần hoàn thành - Kiểm tra có hệ thống";
+          explanation =
+            "Thử các khả năng còn lại một cách có hệ thống để tìm ra vị trí chính xác.";
+
+          for (let i = 0; i < NUM_DIGITS; i++) {
+            if (suggestion[i] === "_") {
+              let possibleDigits = [...positionConstraints[i]].filter(
+                (d) => !excludedDigits.has(d)
+              );
+
+              // Prioritize mustInclude digits
+              let mustIncludeHere = possibleDigits.filter((d) =>
+                mustInclude.has(d)
+              );
+              if (mustIncludeHere.length > 0) {
+                suggestion[i] = mustIncludeHere[0];
+              } else {
+                suggestion[i] = possibleDigits[0] || "0";
+              }
+            }
+          }
+        } else {
+          // Mid-game - balanced approach
+          strategy = "Tiếp tục thu thập thông tin";
+          explanation =
+            "Kết hợp các số đã biết với số mới để thu thập thêm thông tin về mã.";
+
+          for (let i = 0; i < NUM_DIGITS; i++) {
+            if (suggestion[i] === "_") {
+              let possibleDigits = [...positionConstraints[i]].filter(
+                (d) => !excludedDigits.has(d)
+              );
+              suggestion[i] =
+                possibleDigits[
+                  Math.floor(Math.random() * possibleDigits.length)
+                ] || "0";
+            }
+          }
+        }
+
+        return {
+          code: suggestion,
+          strategy: strategy,
+          explanation: explanation,
+        };
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        initializeInputs();
+        displayHistory();
+      });
+
+      // Auto-focus next input
+      document.addEventListener("input", (e) => {
+        if (
+          e.target.classList.contains("digit-input") &&
+          e.target.value.length === 1
+        ) {
+          const currentIndex = parseInt(e.target.id.split("-")[1]);
+          if (currentIndex < NUM_DIGITS - 1) {
+            document.getElementById(`digit-${currentIndex + 1}`).focus();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
