@@ -199,6 +199,30 @@
         color: white;
       }
 
+      .digit-count-btn {
+        padding: 12px 25px;
+        margin: 0 5px;
+        font-size: 1em;
+        font-weight: 600;
+        border: 3px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .digit-count-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .digit-count-btn.active {
+        background: linear-gradient(145deg, #667eea, #764ba2);
+        color: white;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
       .history-item {
         background: linear-gradient(145deg, #f8f9fa, #ffffff);
         border-radius: 15px;
@@ -423,6 +447,24 @@
       <div class="main-card">
         <div class="section-title">📝 Nhập Kết Quả Lần Thử</div>
 
+        <div style="margin-bottom: 20px; text-align: center">
+          <label
+            style="
+              color: #667eea;
+              font-weight: 600;
+              font-size: 1.1em;
+              margin-right: 15px;
+            "
+            >Số lượng mã:</label
+          >
+          <button class="digit-count-btn active" onclick="setDigitCount(9)">
+            9 Số
+          </button>
+          <button class="digit-count-btn" onclick="setDigitCount(10)">
+            10 Số
+          </button>
+        </div>
+
         <div class="input-grid" id="inputGrid"></div>
 
         <div class="action-buttons">
@@ -483,7 +525,7 @@
 
     <script>
       let clues = [];
-      const NUM_DIGITS = 9;
+      let NUM_DIGITS = 9;
       const POSSIBLE_DIGITS = [
         "0",
         "1",
@@ -496,6 +538,33 @@
         "8",
         "9",
       ];
+
+      function setDigitCount(count) {
+        if (clues.length > 0) {
+          if (
+            !confirm(
+              "⚠️ Thay đổi số lượng mã sẽ xóa toàn bộ dữ liệu hiện tại. Bạn có chắc chắn?"
+            )
+          ) {
+            return;
+          }
+          clues = [];
+          displayHistory();
+          analyzeClues();
+          document.getElementById("statsCard").style.display = "none";
+          document.getElementById("solutionContainer").innerHTML = "";
+        }
+
+        NUM_DIGITS = count;
+
+        // Update button states
+        document.querySelectorAll(".digit-count-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        initializeInputs();
+      }
 
       function initializeInputs() {
         const grid = document.getElementById("inputGrid");
@@ -826,9 +895,9 @@
           strategy = "Lần thử đầu tiên - Kiểm tra phạm vi số";
           explanation =
             "Thử các số khác nhau để xác định số nào có trong mã. Tránh lặp lại số để tối đa thông tin.";
-          let testDigits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+          let testDigits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
           for (let i = 0; i < NUM_DIGITS; i++) {
-            suggestion[i] = testDigits[i];
+            suggestion[i] = testDigits[i % testDigits.length];
           }
         } else if (mustInclude.size > 0 && knownCount < NUM_DIGITS) {
           // Have some blues/greens - smart positioning
