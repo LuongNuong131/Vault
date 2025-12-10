@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vault Code Breaker - Premium</title>
+    <title>Vault Code Breaker - Premium Dark</title>
     <style>
       * {
         margin: 0;
@@ -13,7 +13,7 @@
 
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         min-height: 100vh;
         padding: 20px;
         color: #fff;
@@ -44,20 +44,21 @@
       }
 
       .main-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(30, 30, 46, 0.95);
         border-radius: 20px;
         padding: 30px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         margin-bottom: 30px;
         animation: fadeInUp 0.8s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .section-title {
-        color: #667eea;
+        color: #64ffda;
         font-size: 1.8em;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        border-bottom: 3px solid #667eea;
+        border-bottom: 3px solid #64ffda;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -71,23 +72,25 @@
       }
 
       .digit-box {
-        background: linear-gradient(145deg, #f0f0f0, #ffffff);
+        background: linear-gradient(145deg, #2a2a3e, #1e1e2e);
         border-radius: 15px;
         padding: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         transition: all 0.3s ease;
         text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
 
       .digit-box:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 10px 25px rgba(100, 255, 218, 0.2);
+        border-color: rgba(100, 255, 218, 0.3);
       }
 
       .digit-box label {
         display: block;
         font-weight: 600;
-        color: #667eea;
+        color: #64ffda;
         margin-bottom: 10px;
         font-size: 0.9em;
       }
@@ -97,43 +100,47 @@
         height: 60px;
         font-size: 2em;
         text-align: center;
-        border: 3px solid #e0e0e0;
+        border: 3px solid #3a3a4e;
         border-radius: 10px;
         margin-bottom: 10px;
         transition: all 0.3s ease;
         font-weight: bold;
-        background: white;
+        background: #1a1a2e;
+        color: #64ffda;
       }
 
       .digit-input:focus {
         outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        border-color: #64ffda;
+        box-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
       }
 
       .color-buttons {
         display: flex;
-        gap: 5px;
+        gap: 8px;
         justify-content: center;
       }
 
       .color-btn {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         border: 3px solid transparent;
-        border-radius: 50%;
+        border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
         position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
 
       .color-btn:hover {
-        transform: scale(1.1);
+        transform: scale(1.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       }
 
       .color-btn.active {
-        border-color: #333;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        border-color: #fff;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        transform: scale(1.1);
       }
 
       .color-btn.active::after {
@@ -144,20 +151,20 @@
         transform: translate(-50%, -50%);
         color: white;
         font-weight: bold;
-        font-size: 1.2em;
-        text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        font-size: 1.4em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
       }
 
       .color-btn.red {
-        background: linear-gradient(145deg, #ff6b6b, #ee5a6f);
+        background: linear-gradient(145deg, #ff4757, #ee5a6f);
       }
 
       .color-btn.blue {
-        background: linear-gradient(145deg, #4ecdc4, #44a8a0);
+        background: linear-gradient(145deg, #1e90ff, #0077cc);
       }
 
       .color-btn.green {
-        background: linear-gradient(145deg, #95e1d3, #7ed6c2);
+        background: linear-gradient(145deg, #2ecc71, #27ae60);
       }
 
       .action-buttons {
@@ -190,12 +197,12 @@
       }
 
       .btn-primary {
-        background: linear-gradient(145deg, #667eea, #764ba2);
-        color: white;
+        background: linear-gradient(145deg, #64ffda, #00bfa5);
+        color: #1a1a2e;
       }
 
       .btn-danger {
-        background: linear-gradient(145deg, #ff6b6b, #ee5a6f);
+        background: linear-gradient(145deg, #ff4757, #ee5a6f);
         color: white;
       }
 
@@ -204,9 +211,9 @@
         margin: 0 5px;
         font-size: 1em;
         font-weight: 600;
-        border: 3px solid #667eea;
-        background: white;
-        color: #667eea;
+        border: 3px solid #64ffda;
+        background: #1a1a2e;
+        color: #64ffda;
         border-radius: 10px;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -214,22 +221,23 @@
 
       .digit-count-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
       }
 
       .digit-count-btn.active {
-        background: linear-gradient(145deg, #667eea, #764ba2);
-        color: white;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(145deg, #64ffda, #00bfa5);
+        color: #1a1a2e;
+        box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
       }
 
       .history-item {
-        background: linear-gradient(145deg, #f8f9fa, #ffffff);
+        background: linear-gradient(145deg, #2a2a3e, #1e1e2e);
         border-radius: 15px;
         padding: 20px;
         margin-bottom: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         animation: slideIn 0.5s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
 
       .history-header {
@@ -241,12 +249,12 @@
 
       .history-title {
         font-weight: 700;
-        color: #667eea;
+        color: #64ffda;
         font-size: 1.2em;
       }
 
       .delete-btn {
-        background: #ff6b6b;
+        background: #ff4757;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -259,6 +267,7 @@
       .delete-btn:hover {
         background: #ee5a6f;
         transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
       }
 
       .digits-display {
@@ -277,31 +286,31 @@
         justify-content: center;
         font-size: 1.5em;
         font-weight: bold;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
       }
 
       .display-digit.red {
-        background: linear-gradient(145deg, #ff6b6b, #ee5a6f);
+        background: linear-gradient(145deg, #ff4757, #ee5a6f);
         color: white;
       }
 
       .display-digit.blue {
-        background: linear-gradient(145deg, #4ecdc4, #44a8a0);
+        background: linear-gradient(145deg, #1e90ff, #0077cc);
         color: white;
       }
 
       .display-digit.green {
-        background: linear-gradient(145deg, #95e1d3, #7ed6c2);
-        color: #333;
+        background: linear-gradient(145deg, #2ecc71, #27ae60);
+        color: white;
       }
 
       .analysis-content {
-        color: #333;
+        color: #e0e0e0;
         line-height: 1.8;
       }
 
       .analysis-content h3 {
-        color: #667eea;
+        color: #64ffda;
         margin-top: 20px;
         margin-bottom: 10px;
         font-size: 1.3em;
@@ -310,8 +319,9 @@
       .analysis-content p {
         margin-bottom: 10px;
         padding: 10px;
-        background: #f8f9fa;
+        background: #2a2a3e;
         border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
 
       .final-solution {
@@ -320,7 +330,7 @@
         padding: 30px;
         text-align: center;
         margin-top: 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         animation: pulse 2s infinite;
       }
 
@@ -347,12 +357,12 @@
       }
 
       .stat-box {
-        background: linear-gradient(145deg, #667eea, #764ba2);
-        color: white;
+        background: linear-gradient(145deg, #64ffda, #00bfa5);
+        color: #1a1a2e;
         padding: 20px;
         border-radius: 15px;
         text-align: center;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       }
 
       .stat-number {
@@ -369,14 +379,14 @@
       .empty-state {
         text-align: center;
         padding: 60px 20px;
-        color: #999;
+        color: #888;
       }
 
       .empty-state svg {
         width: 100px;
         height: 100px;
         margin-bottom: 20px;
-        opacity: 0.5;
+        opacity: 0.3;
       }
 
       @keyframes fadeInDown {
@@ -445,12 +455,12 @@
       </div>
 
       <div class="main-card">
-        <div class="section-title">📝 Nhập Kết Quả Lần Thử</div>
+        <div class="section-title">🔢 Nhập Kết Quả Lần Thử</div>
 
         <div style="margin-bottom: 20px; text-align: center">
           <label
             style="
-              color: #667eea;
+              color: #64ffda;
               font-weight: 600;
               font-size: 1.1em;
               margin-right: 15px;
@@ -747,16 +757,23 @@
               mustInclude.add(digit);
               positionConstraints[position] = new Set([digit]);
             } else if (color === "red") {
-              let wasBlueOrGreen = clues.some((c) =>
-                c.some(
-                  (i) =>
-                    i.digit === digit &&
-                    (i.color === "blue" || i.color === "green")
-                )
-              );
+              // Red means this digit is NOT in the code at all
+              // Only mark as excluded if it was NEVER blue or green
+              let wasBlueOrGreen = false;
+              for (let c of clues) {
+                for (let i of c) {
+                  if (i.digit === digit && (i.color === "blue" || i.color === "green")) {
+                    wasBlueOrGreen = true;
+                    break;
+                  }
+                }
+                if (wasBlueOrGreen) break;
+              }
+              
               if (!wasBlueOrGreen) {
                 excludedDigits.add(digit);
               }
+              // Always remove from this position
               positionConstraints[position].delete(digit);
             } else if (color === "blue") {
               mustInclude.add(digit);
@@ -812,23 +829,23 @@
           );
 
           html +=
-            '<div style="background: linear-gradient(145deg, #e3f2fd, #bbdefb); padding: 20px; border-radius: 12px; border: 3px solid #2196f3; margin-top: 15px;">';
+            '<div style="background: linear-gradient(145deg, #2a4858, #1e3a4a); padding: 20px; border-radius: 12px; border: 3px solid #64ffda; margin-top: 15px;">';
           html +=
-            '<p style="font-size: 1.1em; margin-bottom: 15px;"><strong>🎯 Chiến lược:</strong> ' +
+            '<p style="font-size: 1.1em; margin-bottom: 15px; color: #64ffda;"><strong>🎯 Chiến lược:</strong> ' +
             suggestion.strategy +
             "</p>";
           html +=
             '<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">';
 
           suggestion.code.forEach((digit, index) => {
-            let bgColor = finalCode[index] !== "_" ? "#4caf50" : "#2196f3";
+            let bgColor = finalCode[index] !== "_" ? "#2ecc71" : "#1e90ff";
             let label = finalCode[index] !== "_" ? "✓" : "?";
             html += `
                         <div style="text-align: center;">
-                            <div style="width: 50px; height: 50px; background: ${bgColor}; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8em; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                            <div style="width: 50px; height: 50px; background: ${bgColor}; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8em; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.4);">
                                 ${digit}
                             </div>
-                            <div style="font-size: 0.8em; color: #333; margin-top: 5px;">${label} ${
+                            <div style="font-size: 0.8em; color: #64ffda; margin-top: 5px;">${label} ${
               index + 1
             }</div>
                         </div>
@@ -837,7 +854,7 @@
 
           html += "</div>";
           html +=
-            '<p style="margin-top: 15px; font-size: 0.95em; color: #555;"><strong>📝 Giải thích:</strong> ' +
+            '<p style="margin-top: 15px; font-size: 0.95em; color: #e0e0e0;"><strong>🔍 Giải thích:</strong> ' +
             suggestion.explanation +
             "</p>";
           html += "</div>";
